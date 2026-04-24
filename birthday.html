@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #ff416c, #1a1a2e);
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app {
+    text-align: center;
+    max-width: 400px;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+p {
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+img {
+    width: 220px;
+    border-radius: 20px;
+    margin-top: 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    animation: zoom 0.6s ease;
+}
+
+@keyframes zoom {
+    from {transform: scale(0.5);}
+    to {transform: scale(1);}
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}
+
+/* Glitch text */
+.glitch {
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+    0% {transform: translate(1px, -1px);}
+    25% {transform: translate(-1px, 1px);}
+    50% {transform: translate(1px, 1px);}
+    75% {transform: translate(-1px, -1px);}
+    100% {transform: translate(0);}
+}
+
+.countdown {
+    margin-top: 10px;
+    font-size: 1.5rem;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+    <h1 id="typing"></h1>
+    <div class="countdown" id="countdown"></div>
+    <button onclick="start()">Enter 🎂</button>
+</div>
+
+<script>
+
+// ================== CONFIG ==================
+let nameText = "Happy Birthday Legend 🎉"; // change name if needed
+
+let photos = [
+"https://img.sanishtech.com/u/b4053828e53c6d610f5379e7f4c517ca.jpeg",
+"https://img.sanishtech.com/u/a2d247f4cec34a6ff53b5ccd806f88bc.jpeg",
+"https://img.sanishtech.com/u/ddb3fc5c54da9c268427936b99641cb4.jpeg",
+"https://img.sanishtech.com/u/fc7aaf2bffa8f4e6b5a5e85b4b46281d.jpeg",
+"https://img.sanishtech.com/u/4b391799f7bbeb1e0bdb56742a4a3f2f.jpeg"
+];
+
+// ================== TYPING EFFECT ==================
+let i = 0;
+function type() {
+    if (i < nameText.length) {
+        document.getElementById("typing").innerHTML += nameText.charAt(i);
+        i++;
+        setTimeout(type, 70);
+    }
+}
+type();
+
+// ================== COUNTDOWN ==================
+let time = 5;
+let cd = setInterval(() => {
+    document.getElementById("countdown").innerText = "Starting in " + time;
+    time--;
+    if (time < 0) {
+        clearInterval(cd);
+        document.getElementById("countdown").innerText = "Tap Enter 🎉";
+    }
+}, 1000);
+
+// ================== CONFETTI ==================
+function confettiBurst() {
+    for (let i = 0; i < 120; i++) {
+        let c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration = (Math.random()*2+2) + "s";
+        document.body.appendChild(c);
+    }
+}
+
+// ================== INSIDE EFFECT ==================
+let count = 0;
+
+function start() {
+    next();
+}
+
+function next() {
+    count++;
+
+    let messages = [
+        "Happy Birthday 🎉",
+        "HBD Bro 🔥",
+        "Stay Blessed ❤️",
+        "Party Hard 🎂",
+        "You Are Amazing 😎",
+        "Legend Forever 👑",
+        "Infinite Happiness ♾️"
+    ];
+
+    let msg = messages[count % messages.length];
+
+    let photo = photos[count % photos.length];
+
+    document.getElementById("app").innerHTML = `
+        <h1 class="glitch">${msg} x ${count}</h1>
+        <img src="${photo}">
+        <p>Keep going deeper 👇</p>
+        <button onclick="next()">Go Inside 🚀</button>
+    `;
+
+    confettiBurst();
+
+    // CRAZY FINAL PAGE
+    if (count === 8) {
+        setTimeout(() => {
+            document.body.style.background = "black";
+
+            document.getElementById("app").innerHTML = `
+                <h1 style="color:#ff4d6d">🎁 FINAL SURPRISE 🎁</h1>
+                <p>You are not just a friend...</p>
+                <p style="font-size:1.3rem">You are FAMILY ❤️</p>
+                <p>Wishing you success, happiness & crazy memories 🔥</p>
+                <img src="${photos[0]}">
+                <h1 style="margin-top:20px">HAPPY BIRTHDAY 🎉</h1>
+            `;
+
+            confettiBurst();
+        }, 1200);
+    }
+}
+
+</script>
+
+</body>
+</html>
